@@ -67,7 +67,8 @@ create table usuario(
 
 create table tokens (
     usuario varchar (20),
-    nombretokens
+    tokn char (255),
+    primary key (tokn)
 );
 
 create table telefonousuario(
@@ -90,7 +91,12 @@ create table caracterisicas (
     nombre varchar(64),
     primary key (idcaracteristica)
 );
---insert into caracteristicas values
+insert into caracteristicas values
+(1, 'fragil'),
+(2, 'refrigerado'),
+(3, 'toxico'),
+(4, 'inflamable'),
+(5, 'carga viva');
 
 create table paquete (
     idpaquete int,
@@ -110,4 +116,38 @@ create table lotepaquete(
         references lote (idlote),
     foreign key (idpaquete)
         references paquete (idpaquete)
+);
+
+create table estado(
+    idestado int,
+    estado varchar(64),
+    primary key (idestado)
+);
+
+create table loteenvio(
+    idlote int,
+    idlugarenvio int,
+    fechaestimada date,
+    idestado int,
+    foreign key (idlote)
+        references lote (idlote),
+    foreign key (idlugarenvio)
+        references lugarenvio(idlugarenvio),
+    foreign key (idestado)
+        references estado (idestado),
+    primary key (idlote)
+);
+
+create table camion(
+    matricula char(6),
+    modelo varchar(64),
+    capacidadkg int,
+    capacidadm3 int,
+    primary key (matricula)
+);
+
+create table conductor(
+    usuario varchar(20),
+    licencia char(8) unique,
+    primary key (usuario)
 );
