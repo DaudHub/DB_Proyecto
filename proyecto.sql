@@ -9,71 +9,73 @@ create database proyecto;
 use proyecto;
 
 create table lugarenvio (
-    idlugarenvio int,
-    latitud decimal(9,6),
-    longitud decimal(9,6),
-    calle varchar(64),
-    numero int(4),
+    idlugarenvio int unsigned not null,
+    latitud decimal(9,6) not null,
+    longitud decimal(9,6) not null,
+    calle varchar(64) not null,
+    numeropuerta int(4) not null,
     primary key (idlugarenvio)
 );
 create table telefonolugarenvio(
-    idlugarenvio int,
-    numero int(9),
+    idlugarenvio int unsigned not null,
+    numero int(9) unsigned not null,
     foreign key (idlugarenvio)
         references lugarenvio (idlugarenvio),
     primary key (idlugarenvio, numero)
 );
 
 create table almacen(
-    idlugarenvio int,
-    capacidadkg int,
-    volumenm3 int,
+    idlugarenvio int unsigned not null,
+    capacidadkg int unsigned not null,
+    volumenm3 int unsigned not null,
     foreign key (idlugarenvio)
         references lugarenvio (idlugarenvio),
     primary key (idlugarenvio)
 );
 
 create table domicilio(
-    idlugarenvio int,
+    idlugarenvio int unsigned not null,
     foreign key (idlugarenvio)
         references lugarenvio (idlugarenvio),
     primary key (idlugarenvio)
 );
 
 create table lote(
-    idlote int,
-    idlugarenvio int,
+    idlote int unsigned not null,
+    idlugarenvio int unsigned not null,
     foreign key (idlugarenvio)
         references lugarenvio (idlugarenvio),
     primary key (idlote)
 );
 
 create table rol(
-    idrol int,
-    nombre varchar(64) unique,
+    idrol tinyint unsigned not null,
+    nombre varchar(64) unique not null,
     primary key (idrol)
 );
 
 create table usuario(
-    usuario varchar(20),
-    nombre varchar(20),
-    apellido varchar(20),
-    pwd varchar(255),
-    idrol int,
-    foreign key idrol
+    usuario varchar(20) not null,
+    nombre varchar(20) not null,
+    apellido varchar(20) not null,
+    pwd varchar(255) not null,
+    idrol tinyint unsigned not null,
+    foreign key (idrol)
         references rol (idrol),
     primary key (usuario)
 );
 
 create table tokens (
-    usuario varchar (20),
-    tokn char (255),
+    usuario varchar(20) not null,
+    tokn char(255) not null,
+    foreign key (usuario)
+        references usuario (usuario),
     primary key (tokn)
 );
 
 create table telefonousuario(
-    usuario varchar(20),
-    numero int(9),
+    usuario varchar(20) not null,
+    numero int(9) unsigned not null,
     foreign key (usuario)
         references usuario (usuario),
     primary key (usuario, numero)
@@ -86,9 +88,9 @@ create table cliente (
     primary key (usuario)
 );
 
-create table caracterisicas (
-    idcaracteristica int,
-    nombre varchar(64),
+create table caracteristicas (
+    idcaracteristica tinyint unsigned not null,
+    nombre varchar(64) not null,
     primary key (idcaracteristica)
 );
 insert into caracteristicas values
@@ -99,36 +101,37 @@ insert into caracteristicas values
 (5, 'carga viva');
 
 create table paquete (
-    idpaquete int,
-    comentarios varchar(64),
-    pesokg int,
-    volumenm3 int,
-    usuario varchar(20),
+    idpaquete int unsigned not null,
+    comentarios varchar(64) not null,
+    pesokg int unsigned not null,
+    volumenm3 int unsigned not null,
+    usuario varchar(20) not null,
     foreign key (usuario)
         references usuario (usuario),
     primary key (idpaquete)
 );
 
 create table lotepaquete(
-    idlote int,
-    idpaquete int,
+    idlote int unsigned not null,
+    idpaquete int unsigned not null,
     foreign key (idlote)
         references lote (idlote),
     foreign key (idpaquete)
-        references paquete (idpaquete)
+        references paquete (idpaquete),
+    primary key (idpaquete)
 );
 
 create table estado(
-    idestado int,
-    estado varchar(64),
+    idestado tinyint unsigned not null,
+    estado varchar(64) not null,
     primary key (idestado)
 );
 
 create table loteenvio(
-    idlote int,
-    idlugarenvio int,
-    fechaestimada date,
-    idestado int,
+    idlote int unsigned not null,
+    idlugarenvio int unsigned not null,
+    fechaestimada date not null,
+    idestado tinyint unsigned not null,
     foreign key (idlote)
         references lote (idlote),
     foreign key (idlugarenvio)
@@ -139,15 +142,17 @@ create table loteenvio(
 );
 
 create table camion(
-    matricula char(6),
-    modelo varchar(64),
-    capacidadkg int,
-    capacidadm3 int,
+    matricula char(6) not null,
+    modelo varchar(64) not null,
+    capacidadkg int not null,
+    capacidadm3 int not null,
     primary key (matricula)
 );
 
 create table conductor(
-    usuario varchar(20),
-    licencia char(8) unique,
+    usuario varchar(20) not null,
+    licencia char(8) unique not null,
+    foreign key (usuario)
+        references usuario (usuario),
     primary key (usuario)
 );
