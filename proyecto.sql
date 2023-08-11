@@ -8,12 +8,12 @@ create user apitransito identified by "samnibahsyehstwragsjfodkdsjcnbcgdgiuefw3r
 create database proyecto;
 use proyecto;
 
-create table lugarenvio (
+create table lugarenvio(
     idlugarenvio int unsigned not null,
     latitud decimal(9,6) not null,
     longitud decimal(9,6) not null,
     calle varchar(64) not null,
-    numeropuerta int(4) not null,
+    numeropuerta int(4) unsigned not null,
     primary key (idlugarenvio)
 );
 create table telefonolugarenvio(
@@ -44,7 +44,7 @@ create table lote(
     idlote int unsigned not null,
     idlugarenvio int unsigned not null,
     foreign key (idlugarenvio)
-        references lugarenvio (idlugarenvio),
+        references almacen (idlugarenvio),
     primary key (idlote)
 );
 
@@ -53,6 +53,11 @@ create table rol(
     nombre varchar(64) unique not null,
     primary key (idrol)
 );
+insert into rol values
+(1, 'administrador'),
+(2, 'almacenero'),
+(3, 'camionero'),
+(4, 'cliente');
 
 create table usuario(
     usuario varchar(20) not null,
@@ -82,10 +87,20 @@ create table telefonousuario(
 );
 
 create table cliente (
-    usuario varchar(20),
+    usuario varchar(20) not null,
     foreign key (usuario)
         references usuario (usuario),
     primary key (usuario)
+);
+
+create table clienteenvio(
+    cliente varchar(20) not null,
+    idlugarenvio int unsigned not null,
+    foreign key (cliente)
+        references cliente (usuario),
+    foreign key (idlugarenvio)
+        references lugarenvio (idlugarenvio),
+    primary key (cliente, idlugarenvio)
 );
 
 create table caracteristicas (
@@ -100,15 +115,37 @@ insert into caracteristicas values
 (4, 'inflamable'),
 (5, 'carga viva');
 
+create table estadofisico(
+    idestadofisico tinyint unsigned not null,
+    nombreestadofisico varchar(64) unique not null,
+    primary key (idestadofisico)
+);
+
 create table paquete (
     idpaquete int unsigned not null,
     comentarios varchar(64) not null,
-    pesokg int unsigned not null,
-    volumenm3 int unsigned not null,
+    pesokg decimal(5,2) unsigned not null,
+    volumenm3 decimal(3,2) unsigned not null,
     usuario varchar(20) not null,
+    idestadofisico tinyint unsigned not null,
+    usuarioestado varchar(20) not null,
     foreign key (usuario)
         references usuario (usuario),
+    foreign key (idestadofisico)
+        references estadofisico (idestadofisico)
+    foreign key (usuarioestado)
+        references usuario (usuario),
     primary key (idpaquete)
+);
+
+create table paquetecaracteristicas(
+    idpaquete int unsigned not null,
+    idcaracteristica tinyint unsigned not null,
+    foreign key (idpaquete)
+        references paquete (idpaquete),
+    foreign key (idcaracteristica)
+        references caracteristica (idcaracteristica),
+    primary key (idpaquete, idcaracteristica)        
 );
 
 create table lotepaquete(
@@ -141,6 +178,14 @@ create table loteenvio(
     primary key (idlote)
 );
 
+create table lotellegada(
+    idlote int unsigned not null,
+    fechallegada date not null,
+    foreign key (idlote)
+        references loteenvio (idlote),
+    primary key (idlote, fechallegada)
+);
+
 create table camion(
     matricula char(6) not null,
     modelo varchar(64) not null,
@@ -155,4 +200,39 @@ create table conductor(
     foreign key (usuario)
         references usuario (usuario),
     primary key (usuario)
+);
+
+create table conduce(
+    usuario varchar(20) not null,
+    matricula char(6) not null,
+    fechasalida date not null,
+    horasalida time not null,
+    foreign key (usuario)
+        references conductor (usuario),
+    foreign key (matricula)
+        references camion (matricula)
+    primary key (usuario, matricula, fechasalida)
+);
+
+create table conducellegada(
+    usuario varchar(20) not null,
+    matricula char(6) not null,
+    fechasalida date not null,
+    fechallegada date not null,
+    horallegada time not null,
+    foreign key (usuario, matricula, fechasalida)
+        references conduce (usuario, matricula, fechasalida),
+    primary key (usuario, matricula, fechasalida, fechallegada)        
+);
+
+create table cargalote(
+    idlote int unsigned not null,
+    usuario varchar(20) not null,
+    matricula char(6) not null,
+    fechasalida date not null,
+    foreign key (idlote)
+        references lote (idlote),
+    foreign key (usuario, matricula, fechasalida)
+        references conduce (usuario, matricula, fechasalida),
+    primary key (idlote)
 );
