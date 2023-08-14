@@ -47,6 +47,7 @@ create table lote(
         references almacen (idlugarenvio),
     primary key (idlote)
 );
+grant insert, select, update on lote to apialmacen;
 
 create table rol(
     idrol tinyint unsigned not null,
@@ -61,14 +62,21 @@ insert into rol values
 
 create table usuario(
     usuario varchar(20) not null,
+    idrol tinyint unsigned not null,
+    pwd varchar(255) not null,
     nombre varchar(20) not null,
     apellido varchar(20) not null,
-    pwd varchar(255) not null,
-    idrol tinyint unsigned not null,
     foreign key (idrol)
         references rol (idrol),
     primary key (usuario)
 );
+insert into usuario values ('daud', 1, '25536671091981511766355543188227253985418610202146632211173824120110919497153220178', 'Mateo', 'Daud'),
+('rodriguez', 1, '25536671091981511766355543188227253985418610202146632211173824120110919497153220178', 'Christian', 'Rodriguez'),
+('arreche', 1, '25536671091981511766355543188227253985418610202146632211173824120110919497153220178', 'Agustina', 'Arreche'),
+('joselito', 2, '25536671091981511766355543188227253985418610202146632211173824120110919497153220178', 'Joselito', 'Perez'),
+('pedro', 3, '25536671091981511766355543188227253985418610202146632211173824120110919497153220178', 'Pedro', 'Martinez'),
+('adictoalospaquetes', 4, '25536671091981511766355543188227253985418610202146632211173824120110919497153220178', 'Juan', 'Gonzalez');
+grant select on usuario to accessapi;
 
 create table tokens (
     usuario varchar(20) not null,
@@ -77,6 +85,7 @@ create table tokens (
         references usuario (usuario),
     primary key (tokn)
 );
+grant select, insert on tokens to accessapi;
 
 create table telefonousuario(
     usuario varchar(20) not null,
@@ -101,6 +110,13 @@ create table clienteenvio(
     foreign key (idlugarenvio)
         references lugarenvio (idlugarenvio),
     primary key (cliente, idlugarenvio)
+);
+
+create table almacenero(
+    usuario varchar(20) not null,
+    foreign key (usuario)
+        references usuario (usuario),
+    primary key (usuario)
 );
 
 create table caracteristicas (
@@ -132,11 +148,12 @@ create table paquete (
     foreign key (usuario)
         references usuario (usuario),
     foreign key (idestadofisico)
-        references estadofisico (idestadofisico)
+        references estadofisico (idestadofisico),
     foreign key (usuarioestado)
         references usuario (usuario),
     primary key (idpaquete)
 );
+grant insert, select, update on paquete to apialmacen;
 
 create table paquetecaracteristicas(
     idpaquete int unsigned not null,
@@ -144,9 +161,10 @@ create table paquetecaracteristicas(
     foreign key (idpaquete)
         references paquete (idpaquete),
     foreign key (idcaracteristica)
-        references caracteristica (idcaracteristica),
+        references caracteristicas (idcaracteristica),
     primary key (idpaquete, idcaracteristica)        
 );
+grant insert, select, update on paquetecaracteristicas to apialmacen;
 
 create table lotepaquete(
     idlote int unsigned not null,
@@ -157,12 +175,17 @@ create table lotepaquete(
         references paquete (idpaquete),
     primary key (idpaquete)
 );
+grant insert, select, update on lotepaquete to apialmacen;
 
 create table estado(
     idestado tinyint unsigned not null,
     estado varchar(64) not null,
     primary key (idestado)
 );
+insert into estado values (1, 'sano'),
+(2, 'ligeramente dañado'),
+(3, 'medianamente dañado'),
+(4, 'gravemente dañado');
 
 create table loteenvio(
     idlote int unsigned not null,
@@ -210,7 +233,7 @@ create table conduce(
     foreign key (usuario)
         references conductor (usuario),
     foreign key (matricula)
-        references camion (matricula)
+        references camion (matricula),
     primary key (usuario, matricula, fechasalida)
 );
 
@@ -236,3 +259,4 @@ create table cargalote(
         references conduce (usuario, matricula, fechasalida),
     primary key (idlote)
 );
+grant insert, select, update on cargalote to apialmacen;
