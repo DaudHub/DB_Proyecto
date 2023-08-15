@@ -114,8 +114,11 @@ create table clienteenvio(
 
 create table almacenero(
     usuario varchar(20) not null,
+    idlugarenvio int unsigned not null,
     foreign key (usuario)
         references usuario (usuario),
+    foreign key (idlugarenvio)
+        references almacen (idlugarenvio),
     primary key (usuario)
 );
 
