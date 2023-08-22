@@ -3,8 +3,8 @@ drop user if exists apialmacen;
 create user apialmacen identified by "urbgieubgiutg98rtygtgiurnindg8958y";
 drop user if exists accessapi;
 create user accessapi identified by "kwefbwibcakebvuyevbiubqury38";
-drop user if exists apitransito;
-create user apitransito identified by "samnibahsyehstwragsjfodkdsjcnbcgdgiuefw3r2t878y0hhjadsdvs";
+drop user if exists transito;
+create user transito identified by "gbiugbiuerbgieurgbiuerbgiubre";
 create database proyecto;
 use proyecto;
 
@@ -16,6 +16,7 @@ create table lugarenvio(
     numeropuerta int(4) unsigned not null,
     primary key (idlugarenvio)
 );
+insert into lugarenvio values (1, 100.000000, 10.000000, 'unacalle', 1234);
 create table telefonolugarenvio(
     idlugarenvio int unsigned not null,
     numero int(9) unsigned not null,
@@ -32,6 +33,7 @@ create table almacen(
         references lugarenvio (idlugarenvio),
     primary key (idlugarenvio)
 );
+insert into almacen values (1, 10000000, 1000000);
 
 create table domicilio(
     idlugarenvio int unsigned not null,
@@ -48,6 +50,8 @@ create table lote(
     primary key (idlote)
 );
 grant insert, select, update on lote to apialmacen;
+grant select on lote to transito;
+insert into lote values (1, 1);
 
 create table rol(
     idrol tinyint unsigned not null,
@@ -77,6 +81,8 @@ insert into usuario values ('daud', 1, '2553667109198151176635554318822725398541
 ('pedro', 3, '25536671091981511766355543188227253985418610202146632211173824120110919497153220178', 'Pedro', 'Martinez'),
 ('adictoalospaquetes', 4, '25536671091981511766355543188227253985418610202146632211173824120110919497153220178', 'Juan', 'Gonzalez');
 grant select on usuario to accessapi;
+grant select on usuario to apialmacen;
+grant select on usuario to transito;
 
 create table tokens (
     usuario varchar(20) not null,
@@ -86,6 +92,8 @@ create table tokens (
     primary key (tokn)
 );
 grant select, insert on tokens to accessapi;
+grant select on tokens to apialmacen;
+grant select on tokens to transito;
 
 create table telefonousuario(
     usuario varchar(20) not null,
@@ -219,6 +227,8 @@ create table camion(
     capacidadm3 int not null,
     primary key (matricula)
 );
+insert into camion values ('ABC123', 'Mercedes-Benz', 2000, 20),
+('CBA321', 'Mercedes-Benz', 2000, 20);
 
 create table conductor(
     usuario varchar(20) not null,
@@ -227,6 +237,7 @@ create table conductor(
         references usuario (usuario),
     primary key (usuario)
 );
+insert into conductor values ('pedro', 12345678);
 
 create table conduce(
     usuario varchar(20) not null,
@@ -239,6 +250,10 @@ create table conduce(
         references camion (matricula),
     primary key (usuario, matricula, fechasalida)
 );
+insert into conduce values ('pedro', 'ABC123', '2023-8-22', '14:23:00'),
+('pedro', 'ABC123', '2023-8-23', '14:23:00');
+grant select on conduce to transito;
+
 
 create table conducellegada(
     usuario varchar(20) not null,
@@ -263,3 +278,5 @@ create table cargalote(
     primary key (idlote)
 );
 grant insert, select, update on cargalote to apialmacen;
+grant select on cargalote to transito;
+insert into cargalote values (1, 'pedro', 'ABC123', (select fechasalida from conduce where matricula='ABC123' order by fechasalida desc limit 1));
