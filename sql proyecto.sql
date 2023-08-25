@@ -1,5 +1,7 @@
+SET GLOBAL validate_password.policy = LOW;
 drop database if exists proyecto;
 drop user if exists apialmacen;
+
 create user apialmacen identified by "urbgieubgiutg98rtygtgiurnindg8958y";
 drop user if exists accessapi;
 create user accessapi identified by "kwefbwibcakebvuyevbiubqury38";
