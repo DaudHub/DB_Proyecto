@@ -218,7 +218,7 @@ create table paquete (
     idestadofisico tinyint unsigned not null,
     usuarioestado varchar(20) not null,
     foreign key (usuario)
-        references usuario (usuario),
+        references cliente (usuario),
     foreign key (idestadofisico)
         references estadofisico (idestadofisico),
     foreign key (usuarioestado)
@@ -238,8 +238,6 @@ insert into paquete values
 (8,'',800,902,'rodriguez',2,'joselito'),
 (9,'',500,700,'rodriguez',4,'arreche'),
 (10,'',360,420,'rodriguez',2,'joselito');
-
-
 
 
 
