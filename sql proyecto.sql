@@ -1,4 +1,3 @@
-SET GLOBAL validate_password.policy = LOW;
 drop database if exists proyecto;
 drop user if exists apialmacen;
 
@@ -126,6 +125,7 @@ create table tokens (
 grant select, insert on tokens to accessapi;
 grant select on tokens to apialmacen;
 grant select on tokens to transito;
+insert into tokens values ('adictoalospaquetes', 'Y-g*B89DdBh5SU!gJsRJJb?nLl8bgn%ArsesJJ.3Ly_uh%?BMdmjd1Gis_R.g&vnWP2s?EBXOVp=$-=9$%vaOY2!2jE%H_GEC8kS$HoEpxMaJe4rX1spf43_7K+3h6*Rj=Oglzi14_=XS-5KIuyDHTk=ncUpMyutyfct41#EuP1g#vMCr7hra4O9Gqj&EMgkpi+jCs*8W7ZgF?I0Gzcaw5SM$meikb-xmSY6*2ekf0dKbsW=%YKxWsu*HjWbdYG');
 
 create table telefonousuario(
     usuario varchar(20) not null,
@@ -152,7 +152,8 @@ create table cliente (
     primary key (usuario)
 );
 insert into cliente values ('daud'),
-('rodriguez');
+('rodriguez'), ("adictoalospaquetes");
+grant select on proyecto.cliente to transito;
 
 
 create table clienteenvio(
@@ -202,6 +203,7 @@ create table estadofisico(
     nombreestadofisico varchar(64) unique not null,
     primary key (idestadofisico)
 );
+grant select on estadofisico to transito;
 insert into estadofisico values (1, 'sano'),
 (2, 'ligeramente dañado'),
 (3, 'medianamente dañado'),
@@ -226,6 +228,7 @@ create table paquete (
     primary key (idpaquete)
 );
 grant insert, select, update on paquete to apialmacen;
+grant select on proyecto.paquete to transito;
 
 insert into paquete values
 (1,'',25,12,'daud',1,'daud'),
@@ -237,7 +240,8 @@ insert into paquete values
 (7,'',80,92,'rodriguez',1,'arreche'),
 (8,'',800,902,'rodriguez',2,'joselito'),
 (9,'',500,700,'rodriguez',4,'arreche'),
-(10,'',360,420,'rodriguez',2,'joselito');
+(10,'',360,420,'rodriguez',2,'joselito'),
+(89,'',40,0.5,'adictoalospaquetes',1,'joselito');
 
 
 
@@ -274,6 +278,7 @@ create table lotepaquete(
     primary key (idpaquete)
 );
 grant insert, select, update on lotepaquete to apialmacen;
+grant select on lotepaquete to transito;
 
 insert into lotepaquete values (6,10),
 (1,1),
@@ -294,6 +299,7 @@ create table estado(
     estado varchar(64) not null,
     primary key (idestado)
 );
+grant select on proyecto.estado to transito;
 insert into estado values (1, 'En deposito'),
 (2, 'En tránsito'),
 (3, 'Entregado');
@@ -311,6 +317,7 @@ create table loteenvio(
         references estado (idestado),
     primary key (idlote)
 );
+grant select on proyecto.loteenvio to transito;
 insert into loteenvio values (1,1,'2023-08-09',3),
 (2,1,'2023-07-23',2),
 (3,2,'2023-05-28',2),
