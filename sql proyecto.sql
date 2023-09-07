@@ -23,8 +23,6 @@ insert into lugarenvio values (1,-34.741011,-56.181727, 'obelisco', 1234),
 (4,-34.811366,-56.151623,'las flores',1059);
 
 
-
-
 create table telefonolugarenvio(
     idlugarenvio int unsigned not null,
     numero int(9) unsigned not null,
