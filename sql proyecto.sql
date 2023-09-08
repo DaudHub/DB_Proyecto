@@ -406,3 +406,8 @@ grant insert, select, update on cargalote to apialmacen;
 grant select on cargalote to transito;
 insert into cargalote values (1, 'pedro', 'ABC123', (select fechasalida from conduce where matricula='ABC123' order by fechasalida desc limit 1));
 
+select *
+from proyecto.lugarenvio
+    join proyecto.almacen on proyecto.lugarenvio.idlugarenvio=proyecto.almacen.idlugarenvio
+    join proyecto.domicilio on proyecto.lugarenvio.idlugarenvio=proyecto.domicilio.idlugarenvio
+    join proyecto.lote on proyecto.lugarenvio.idlugarenvio=proyecto.lote.idlugarenvio; 
