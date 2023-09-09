@@ -17,6 +17,7 @@ create table lugarenvio(
     numeropuerta int(4) unsigned not null,
     primary key (idlugarenvio)
 );
+grant select on proyecto.lugarenvio to transito;
 insert into lugarenvio values (1,-34.741011,-56.181727, 'obelisco', 1234),
 (2,-34.902476,-56.149578,'26 de marzo',1366),
 (3,-34.921458,-56.155796,'Blanca del tabaré',2125),
@@ -404,10 +405,10 @@ create table cargalote(
 );
 grant insert, select, update on cargalote to apialmacen;
 grant select on cargalote to transito;
-insert into cargalote values (1, 'pedro', 'ABC123', (select fechasalida from conduce where matricula='ABC123' order by fechasalida desc limit 1));
+insert into proyecto.cargalote values (1, 'pedro', 'ABC123', (select fechasalida from conduce where matricula='ABC123' order by fechasalida desc limit 1));
 
 select *
 from proyecto.lugarenvio
     join proyecto.almacen on proyecto.lugarenvio.idlugarenvio=proyecto.almacen.idlugarenvio
     join proyecto.domicilio on proyecto.lugarenvio.idlugarenvio=proyecto.domicilio.idlugarenvio
-    join proyecto.lote on proyecto.lugarenvio.idlugarenvio=proyecto.lote.idlugarenvio; 
+    join proyecto.lote on proyecto.lugarenvio.idlugarenvio=proyecto.lote.idlugarenvio;  
