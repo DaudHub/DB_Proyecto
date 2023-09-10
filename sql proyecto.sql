@@ -1,6 +1,5 @@
 drop database if exists proyecto;
 drop user if exists apialmacen;
-
 create user apialmacen identified by "urbgieubgiutg98rtygtgiurnindg8958y";
 drop user if exists accessapi;
 create user accessapi identified by "kwefbwibcakebvuyevbiubqury38";
@@ -326,9 +325,6 @@ insert into loteenvio values (1,1,'2023-08-09',3),
 (6,1,'2023-11-21',3),
 (7,2,'2023-10-29',2);
 
-
-
-
 create table lotellegada(
     idlote int unsigned not null,
     fechallegada date not null,
@@ -336,12 +332,9 @@ create table lotellegada(
         references loteenvio (idlote),
     primary key (idlote, fechallegada)
 );
-
 insert into lotellegada values (1,'2023-08-09'),
 (5,'2023-12-11'),
 (6,'2023-11-21');
-
-
 
 create table camion(
     matricula char(6) not null,
@@ -352,8 +345,6 @@ create table camion(
 );
 insert into camion values ('ABC123', 'Mercedes-Benz', 2000, 20),
 ('CBA321', 'Mercedes-Benz', 2000, 20);
-
-
 
 create table conductor(
     usuario varchar(20) not null,
