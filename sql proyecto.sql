@@ -16,6 +16,7 @@ create table lugarenvio(
     numeropuerta int(4) unsigned not null,
     primary key (idlugarenvio)
 );
+grant select on proyecto.lugarenvio to apialmacen;
 grant select on proyecto.lugarenvio to transito;
 insert into lugarenvio values (1,-34.741011,-56.181727, 'obelisco', 1234),
 (2,-34.902476,-56.149578,'26 de marzo',1366),
@@ -46,6 +47,7 @@ create table almacen(
         references lugarenvio (idlugarenvio),
     primary key (idlugarenvio)
 );
+grant select on proyecto.almacen to apialmacenes;
 insert into almacen values (1, 10000000, 1000000),
 (2, 20000000, 3000000);
 
@@ -87,6 +89,7 @@ create table rol(
     nombre varchar(64) unique not null,
     primary key (idrol)
 );
+grant select on proyecto.rol to apiacceso;
 insert into rol values
 (1, 'administrador'),
 (2, 'almacenero'),
@@ -180,6 +183,7 @@ create table almacenero(
         references almacen (idlugarenvio),
     primary key (usuario)
 );
+grant select on proyecto.almacenero to apiacceso;
 insert into almacenero values ('arreche',1),
 ('joselito',2);
 
@@ -226,7 +230,7 @@ create table paquete (
         references usuario (usuario),
     primary key (idpaquete)
 );
-grant insert, select, update on paquete to apialmacen;
+grant insert, select, update on proyecto.paquete to apialmacen;
 grant select on proyecto.paquete to transito;
 
 insert into paquete values
@@ -316,6 +320,7 @@ create table loteenvio(
         references estado (idestado),
     primary key (idlote)
 );
+grant insert, select, update on proyecto.loteenvio to apialmacen;
 grant select on proyecto.loteenvio to transito;
 insert into loteenvio values (1,1,'2023-08-09',3),
 (2,1,'2023-07-23',2),
