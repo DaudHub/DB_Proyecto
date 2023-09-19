@@ -316,7 +316,7 @@ create table loteenvio(
     primary key (idlote)
 );
 grant insert, select, update on proyecto.loteenvio to apialmacen;
-grant select on proyecto.loteenvio to transito;
+grant select, update on proyecto.loteenvio to transito;
 insert into loteenvio values (1,1,'2023-08-09',3),
 (2,1,'2023-07-23',2),
 (3,2,'2023-05-28',2),
