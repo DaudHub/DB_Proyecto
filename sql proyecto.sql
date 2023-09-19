@@ -1,4 +1,5 @@
 drop database if exists proyecto;
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'porfavorentrar';
 drop user if exists apialmacen;
 create user apialmacen identified by "urbgieubgiutg98rtygtgiurnindg8958y";
 drop user if exists accessapi;
@@ -82,8 +83,6 @@ insert into lote values (1, 1),
 (6,2),
 (7,1);
 
-
-
 create table rol(
     idrol tinyint unsigned not null,
     nombre varchar(64) unique not null,
@@ -127,7 +126,7 @@ grant select, insert on tokens to accessapi;
 grant select on tokens to apialmacen;
 grant select on tokens to transito;
 insert into tokens values ('adictoalospaquetes', 'Y-g*B89DdBh5SU!gJsRJJb?nLl8bgn%ArsesJJ.3Ly_uh%?BMdmjd1Gis_R.g&vnWP2s?EBXOVp=$-=9$%vaOY2!2jE%H_GEC8kS$HoEpxMaJe4rX1spf43_7K+3h6*Rj=Oglzi14_=XS-5KIuyDHTk=ncUpMyutyfct41#EuP1g#vMCr7hra4O9Gqj&EMgkpi+jCs*8W7ZgF?I0Gzcaw5SM$meikb-xmSY6*2ekf0dKbsW=%YKxWsu*HjWbdYG');
-insert into proyecto.tokens values ('pedro','C?WEGFoJ?&s8%27sfE-UYB%VUZUowPd!d#Xqc+?Q5GZe&5F+&k=+C1u&Ut.L?h9=qB*JCljiYX&5$&+oH=ZBcURRzAD!Hg4+dQtXxAQOyg5P-KxM&8-DD3zc9oC2T$f.B_53d8#Epx=ws4%t%x-hO9ud6Ezkg-xEnxeB*0LxFKV4AVdGRvYewvSk?%TaE_188SsISaGEyfUYqWYDu&3Y5I7W+-4Vgs1S7AOx7ASF#tpf9DcF8%+*M=I0HQSL2yS')
+insert into proyecto.tokens values ('pedro','C?WEGFoJ?&s8%27sfE-UYB%VUZUowPd!d#Xqc+?Q5GZe&5F+&k=+C1u&Ut.L?h9=qB*JCljiYX&5$&+oH=ZBcURRzAD!Hg4+dQtXxAQOyg5P-KxM&8-DD3zc9oC2T$f.B_53d8#Epx=ws4%t%x-hO9ud6Ezkg-xEnxeB*0LxFKV4AVdGRvYewvSk?%TaE_188SsISaGEyfUYqWYDu&3Y5I7W+-4Vgs1S7AOx7ASF#tpf9DcF8%+*M=I0HQSL2yS');
 
 create table telefonousuario(
     usuario varchar(20) not null,
@@ -142,10 +141,6 @@ insert into telefonousuario values ('daud',096578423),
 ('joselito',095487023),
 ('pedro',095666472),
 ('adictoalospaquetes',093658785);
-
-
-
-
 
 create table cliente (
     usuario varchar(20) not null,
