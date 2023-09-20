@@ -132,7 +132,7 @@ create table telefonousuario(
     usuario varchar(20) not null,
     numero int(9) unsigned not null,
     foreign key (usuario)
-        references usuario (usuario),
+        references usuario (usuario) on delete cascade,
     primary key (usuario, numero)
 );
 insert into telefonousuario values ('daud',096578423),
