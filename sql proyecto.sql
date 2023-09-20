@@ -145,7 +145,7 @@ insert into telefonousuario values ('daud',096578423),
 create table cliente (
     usuario varchar(20) not null,
     foreign key (usuario)
-        references usuario (usuario),
+        references usuario (usuario) on delete cascade,
     primary key (usuario)
 );
 insert into cliente values ('daud'),
@@ -168,19 +168,18 @@ insert into clienteenvio values ('daud',3,true),
 ('rodriguez',4,true);
 
 
-
 create table almacenero(
     usuario varchar(20) not null,
     idlugarenvio int unsigned not null,
     foreign key (usuario)
-        references usuario (usuario),
+        references usuario (usuario) on delete cascade,
     foreign key (idlugarenvio)
         references almacen (idlugarenvio),
     primary key (usuario)
 );
 grant select on proyecto.almacenero to apiacceso;
-insert into almacenero values ('arreche',1),
-('joselito',2);
+insert into almacenero values ('arreche', 1),
+('joselito', 2);
 
 
 
@@ -350,7 +349,7 @@ create table conductor(
     usuario varchar(20) not null,
     licencia char(8) unique not null,
     foreign key (usuario)
-        references usuario (usuario),
+        references usuario (usuario) on delete cascade,
     primary key (usuario)
 );
 insert into conductor values ('pedro', 12345678),
@@ -403,3 +402,5 @@ from proyecto.lugarenvio
     join proyecto.almacen on proyecto.lugarenvio.idlugarenvio=proyecto.almacen.idlugarenvio
     join proyecto.domicilio on proyecto.lugarenvio.idlugarenvio=proyecto.domicilio.idlugarenvio
     join proyecto.lote on proyecto.lugarenvio.idlugarenvio=proyecto.lote.idlugarenvio;  
+
+select * from usuario;
