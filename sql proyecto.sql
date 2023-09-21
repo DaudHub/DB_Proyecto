@@ -38,8 +38,6 @@ insert into telefonolugarenvio values (1,099236789),
 (4,099456789);
 
 
-
-
 create table almacen(
     idlugarenvio int unsigned not null,
     capacidadkg int unsigned not null,
@@ -402,5 +400,3 @@ from proyecto.lugarenvio
     join proyecto.almacen on proyecto.lugarenvio.idlugarenvio=proyecto.almacen.idlugarenvio
     join proyecto.domicilio on proyecto.lugarenvio.idlugarenvio=proyecto.domicilio.idlugarenvio
     join proyecto.lote on proyecto.lugarenvio.idlugarenvio=proyecto.lote.idlugarenvio;  
-
-select * from usuario;
