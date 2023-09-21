@@ -336,8 +336,8 @@ insert into lotellegada values (1,'2023-08-09'),
 create table camion(
     matricula char(6) not null,
     modelo varchar(64) not null,
-    capacidadkg int not null,
-    capacidadm3 int not null,
+    capacidadkg int unsigned not null,
+    capacidadm3 int unsigned not null,
     primary key (matricula)
 );
 insert into camion values ('ABC123', 'Mercedes-Benz', 2000, 20),
@@ -400,3 +400,5 @@ from proyecto.lugarenvio
     join proyecto.almacen on proyecto.lugarenvio.idlugarenvio=proyecto.almacen.idlugarenvio
     join proyecto.domicilio on proyecto.lugarenvio.idlugarenvio=proyecto.domicilio.idlugarenvio
     join proyecto.lote on proyecto.lugarenvio.idlugarenvio=proyecto.lote.idlugarenvio;  
+
+select * from proyecto.camion;
