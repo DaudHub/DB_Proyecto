@@ -1,4 +1,5 @@
 drop database if exists proyecto;
+SET GLOBAL validate_password.policy=LOW;
 ALTER USER 'root'@'localhost' IDENTIFIED BY 'porfavorentrar';
 drop user if exists apialmacen;
 create user apialmacen identified by "urbgieubgiutg98rtygtgiurnindg8958y";
@@ -46,7 +47,7 @@ create table almacen(
         references lugarenvio (idlugarenvio),
     primary key (idlugarenvio)
 );
-grant select on proyecto.almacen to apialmacenes;
+grant select on proyecto.almacen to apialmacen;
 insert into almacen values (1, 10000000, 1000000),
 (2, 20000000, 3000000);
 
@@ -86,7 +87,7 @@ create table rol(
     nombre varchar(64) unique not null,
     primary key (idrol)
 );
-grant select on proyecto.rol to apiacceso;
+grant select on proyecto.rol to accessapi;
 insert into rol values
 (1, 'administrador'),
 (2, 'almacenero'),
@@ -175,7 +176,7 @@ create table almacenero(
         references almacen (idlugarenvio),
     primary key (usuario)
 );
-grant select on proyecto.almacenero to apiacceso;
+grant select on proyecto.almacenero to accessapi;
 insert into almacenero values ('arreche', 1),
 ('joselito', 2);
 
