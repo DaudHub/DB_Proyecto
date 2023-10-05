@@ -1,5 +1,4 @@
 drop database if exists proyecto;
-SET GLOBAL validate_password.policy=LOW;
 ALTER USER 'root'@'localhost' IDENTIFIED BY 'porfavorentrar';
 drop user if exists apialmacen;
 create user apialmacen identified by "urbgieubgiutg98rtygtgiurnindg8958y";
@@ -9,7 +8,6 @@ drop user if exists transito;
 create user transito identified by "gbiugbiuerbgieurgbiuerbgiubre";
 create database proyecto;
 use proyecto;
-use joule;
 create table lugarenvio(
     idlugarenvio int unsigned not null,
     latitud decimal(9,6) not null,
@@ -334,15 +332,25 @@ insert into lotellegada values (1,'2023-08-09'),
 (5,'2023-12-11'),
 (6,'2023-11-21');
 
+create table modelo(
+    idmodelo int unsigned not null,
+    nombre varchar(30),
+    primary key (idmodelo)
+);
+insert into modelo values (1, 'Mercedes-Benz'),
+(2, 'Scania'),
+(3, 'Ford');
+
 create table camion(
     matricula char(6) not null,
-    modelo varchar(64) not null,
+    modelo int unsigned not null,
     capacidadkg int unsigned not null,
     capacidadm3 int unsigned not null,
+    foreign key (modelo) references modelo (idmodelo),
     primary key (matricula)
 );
-insert into camion values ('ABC123', 'Mercedes-Benz', 2000, 20),
-('CBA321', 'Mercedes-Benz', 2000, 20);
+insert into camion values ('ABC123', 1, 2000, 20),
+('CBA321', 2, 2000, 20);
 
 create table conductor(
     usuario varchar(20) not null,
@@ -400,6 +408,10 @@ select *
 from proyecto.lugarenvio
     join proyecto.almacen on proyecto.lugarenvio.idlugarenvio=proyecto.almacen.idlugarenvio
     join proyecto.domicilio on proyecto.lugarenvio.idlugarenvio=proyecto.domicilio.idlugarenvio
-    join proyecto.lote on proyecto.lugarenvio.idlugarenvio=proyecto.lote.idlugarenvio;  
+    join proyecto.lote on proyecto.lugarenvio.idlugarenvio=proyecto.lote.idlugarenvio;
 
-select * from proyecto.camion;
+select * 
+    from proyecto.cargalote 
+        join proyecto.conduce on proyecto.cargalote.usuario=conduce.usuario
+        join proyecto.lote on proyecto.cargalote.idlote=lote.idlote
+        join proyecto.lotepaquete on proyecto.cargalote.idlote=lotepaquete.idlote;
