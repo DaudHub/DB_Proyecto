@@ -415,3 +415,10 @@ select *
         join proyecto.conduce on proyecto.cargalote.usuario=conduce.usuario
         join proyecto.lote on proyecto.cargalote.idlote=lote.idlote
         join proyecto.lotepaquete on proyecto.cargalote.idlote=lotepaquete.idlote;
+
+create view proyecto.usuariorol as 
+    select usuario.usuario, rol.nombre
+    from proyecto.usuario
+        inner join proyecto.rol on usuario.idrol=rol.idrol;
+
+select * from proyecto.usuariorol;
