@@ -18,7 +18,7 @@ create table lugarenvio(
 );
 grant select on proyecto.lugarenvio to apialmacen;
 grant select on proyecto.lugarenvio to transito;
-insert into lugarenvio values (1,-34.741011,-56.181727, 'obelisco', 1234),
+insert into lugarenvio values (1,-34.901084, -56.138456, 'luis alberto de herrera', 1234),
 (2,-34.902476,-56.149578,'26 de marzo',1366),
 (3,-34.921458,-56.155796,'Blanca del tabaré',2125),
 (4,-34.811366,-56.151623,'las flores',1059);
@@ -313,7 +313,7 @@ create table loteenvio(
 );
 grant insert, select, update on proyecto.loteenvio to apialmacen;
 grant select, update on proyecto.loteenvio to transito;
-insert into loteenvio values (1,1,'2023-08-09',3),
+insert into loteenvio values (1,1,'2023-08-09', 2),
 (2,1,'2023-07-23',2),
 (3,2,'2023-05-28',2),
 (4,3,'2023-09-23',1),
@@ -403,6 +403,9 @@ create table cargalote(
 grant insert, select, update on cargalote to apialmacen;
 grant select on cargalote to transito;
 insert into cargalote values (1, 'pedro', 'ABC123', (select fechasalida from conduce where matricula='ABC123' order by fechasalida desc limit 1));
+insert into cargalote values (2, 'pedro', 'ABC123', (select fechasalida from conduce where matricula='ABC123' order by fechasalida desc limit 1));
+insert into cargalote values (3, 'pedro', 'ABC123', (select fechasalida from conduce where matricula='ABC123' order by fechasalida desc limit 1));
+
 
 select *
 from proyecto.lugarenvio
