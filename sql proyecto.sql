@@ -177,8 +177,7 @@ create table almacenero(
 );
 grant select on proyecto.almacenero to accessapi;
 grant select on proyecto.almacenero to apialmacen;
-insert into almacenero values ('arreche', 1),
-('joselito', 2);
+insert into almacenero values ('joselito', 2);
 
 
 
