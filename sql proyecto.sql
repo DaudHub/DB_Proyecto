@@ -86,6 +86,7 @@ create table rol(
     primary key (idrol)
 );
 grant select on proyecto.rol to accessapi;
+grant select on proyecto.rol to apialmacen;
 insert into rol values
 (1, 'administrador'),
 (2, 'almacenero'),
@@ -175,6 +176,7 @@ create table almacenero(
     primary key (usuario)
 );
 grant select on proyecto.almacenero to accessapi;
+grant select on proyecto.almacenero to apialmacen;
 insert into almacenero values ('arreche', 1),
 ('joselito', 2);
 
@@ -185,6 +187,7 @@ create table caracteristicas (
     nombre varchar(64) not null,
     primary key (idcaracteristica)
 );
+grant select on proyecto.caracteristicas to apialmacen;
 insert into caracteristicas values
 (1, 'fragil'),
 (2, 'refrigerado'),
@@ -202,8 +205,6 @@ insert into estadofisico values (1, 'sano'),
 (2, 'ligeramente dañado'),
 (3, 'medianamente dañado'),
 (4, 'gravemente dañado');
-
-
 
 create table paquete (
     idpaquete int unsigned not null,
