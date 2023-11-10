@@ -200,6 +200,7 @@ create table estadofisico(
     primary key (idestadofisico)
 );
 grant select on estadofisico to transito;
+grant select on proyecto.estadofisico to apialmacen;
 insert into estadofisico values (1, 'sano'),
 (2, 'ligeramente dañado'),
 (3, 'medianamente dañado'),
@@ -425,3 +426,24 @@ create view proyecto.usuariorol as
         inner join proyecto.rol on usuario.idrol=rol.idrol;
 
 select * from proyecto.usuariorol;
+
+select * from proyecto.usuario;
+
+select * from proyecto.tokens;
+
+select *
+                                from proyecto.almacenero
+                                    inner join proyecto.lote
+                                        on almacenero.idlugarenvio=lote.idlugarenvio;
+
+select * from proyecto.lote where idlugarenvio=2;
+
+select paquete.idpaquete, paquete.comentarios, paquete.pesokg, paquete.volumenm3, paquete.usuario, estadofisico.nombreestadofisico, paquete.usuarioestado
+                        from proyecto.paquete
+                            inner join proyecto.lotepaquete
+                                on paquete.idpaquete=lotepaquete.idpaquete
+                            inner join proyecto.lote
+                                on lotepaquete.idlote=lote.idlote
+                            inner join proyecto.lugarenvio
+                                on lote.idlugarenvio=lugarenvio.idlugarenvio
+                            inner join proyecto.estadofisico on paquete.idestadofisico=estadofisico.idestadofisico
