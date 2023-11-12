@@ -377,6 +377,7 @@ create table conduce(
 insert into conduce values ('pedro', 'ABC123', '2023-8-22', '14:23:00'),
 ('adictoalospaquetes', 'CBA321', '2023-8-23', '14:23:00');
 grant select on conduce to transito;
+grant select on conduce to apialmacen;
 
 
 create table conducellegada(
@@ -426,3 +427,7 @@ create view proyecto.usuariorol as
         inner join proyecto.rol on usuario.idrol=rol.idrol;
 
 select * from proyecto.usuariorol;
+
+select * from proyecto.loteenvio;
+
+select * from proyecto.cargalote;
