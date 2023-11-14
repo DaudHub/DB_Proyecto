@@ -1,13 +1,5 @@
-drop database if exists proyecto;
-ALTER USER 'root'@'localhost' IDENTIFIED BY 'porfavorentrar';
-drop user if exists apialmacen;
-create user apialmacen identified by "urbgieubgiutg98rtygtgiurnindg8958y";
-drop user if exists accessapi;
-create user accessapi identified by "kwefbwibcakebvuyevbiubqury38";
-drop user if exists transito;
-create user transito identified by "gbiugbiuerbgieurgbiuerbgiubre";
-create database proyecto;
-use proyecto;
+create database if not exists joule;
+use joule;
 create table lugarenvio(
     idlugarenvio int unsigned not null,
     latitud decimal(9,6) not null,
@@ -16,8 +8,6 @@ create table lugarenvio(
     numeropuerta int(4) unsigned not null,
     primary key (idlugarenvio)
 );
-grant select on proyecto.lugarenvio to apialmacen;
-grant select on proyecto.lugarenvio to transito;
 insert into lugarenvio values (1,-34.901084, -56.138456, 'luis alberto de herrera', 1234),
 (2,-34.902476,-56.149578,'26 de marzo',1366),
 (3,-34.921458,-56.155796,'Blanca del tabaré',2125),
@@ -45,10 +35,9 @@ create table almacen(
         references lugarenvio (idlugarenvio),
     primary key (idlugarenvio)
 );
-grant select on proyecto.almacen to apialmacen;
+
 insert into almacen values (1, 10000000, 1000000),
 (2, 20000000, 3000000);
-
 
 
 create table domicilio(
@@ -70,8 +59,6 @@ create table lote(
         references almacen (idlugarenvio),
     primary key (idlote)
 );
-grant insert, select, update on lote to apialmacen;
-grant select on lote to transito;
 insert into lote values (1, 1),
 (2,1),
 (3,1),
@@ -85,8 +72,6 @@ create table rol(
     nombre varchar(64) unique not null,
     primary key (idrol)
 );
-grant select on proyecto.rol to accessapi;
-grant select on proyecto.rol to apialmacen;
 insert into rol values
 (1, 'administrador'),
 (2, 'almacenero'),
@@ -109,9 +94,7 @@ insert into usuario values ('daud', 1, '2553667109198151176635554318822725398541
 ('joselito', 2, '25536671091981511766355543188227253985418610202146632211173824120110919497153220178', 'Joselito', 'Perez'),
 ('pedro', 3, '25536671091981511766355543188227253985418610202146632211173824120110919497153220178', 'Pedro', 'Martinez'),
 ('adictoalospaquetes', 4, '25536671091981511766355543188227253985418610202146632211173824120110919497153220178', 'Juan', 'Gonzalez');
-grant select on usuario to accessapi;
-grant select on usuario to apialmacen;
-grant select on usuario to transito;
+
 
 create table tokens (
     usuario varchar(20) not null,
@@ -120,9 +103,7 @@ create table tokens (
         references usuario (usuario),
     primary key (tokn)
 );
-grant select, insert on tokens to accessapi;
-grant select on tokens to apialmacen;
-grant select on tokens to transito;
+
 insert into tokens values ('adictoalospaquetes', 'Y-g*B89DdBh5SU!gJsRJJb?nLl8bgn%ArsesJJ.3Ly_uh%?BMdmjd1Gis_R.g&vnWP2s?EBXOVp=$-=9$%vaOY2!2jE%H_GEC8kS$HoEpxMaJe4rX1spf43_7K+3h6*Rj=Oglzi14_=XS-5KIuyDHTk=ncUpMyutyfct41#EuP1g#vMCr7hra4O9Gqj&EMgkpi+jCs*8W7ZgF?I0Gzcaw5SM$meikb-xmSY6*2ekf0dKbsW=%YKxWsu*HjWbdYG');
 insert into tokens values ('pedro','C?WEGFoJ?&s8%27sfE-UYB%VUZUowPd!d#Xqc+?Q5GZe&5F+&k=+C1u&Ut.L?h9=qB*JCljiYX&5$&+oH=ZBcURRzAD!Hg4+dQtXxAQOyg5P-KxM&8-DD3zc9oC2T$f.B_53d8#Epx=ws4%t%x-hO9ud6Ezkg-xEnxeB*0LxFKV4AVdGRvYewvSk?%TaE_188SsISaGEyfUYqWYDu&3Y5I7W+-4Vgs1S7AOx7ASF#tpf9DcF8%+*M=I0HQSL2yS');
 
@@ -148,8 +129,6 @@ create table cliente (
 );
 insert into cliente values ('daud'),
 ('rodriguez'), ("adictoalospaquetes");
-grant select on proyecto.cliente to transito;
-
 
 create table clienteenvio(
     cliente varchar(20) not null,
@@ -175,8 +154,6 @@ create table almacenero(
         references almacen (idlugarenvio),
     primary key (usuario)
 );
-grant select on proyecto.almacenero to accessapi;
-grant select on proyecto.almacenero to apialmacen;
 insert into almacenero values ('joselito', 2);
 
 
@@ -186,7 +163,6 @@ create table caracteristicas (
     nombre varchar(64) not null,
     primary key (idcaracteristica)
 );
-grant select on proyecto.caracteristicas to apialmacen;
 insert into caracteristicas values
 (1, 'fragil'),
 (2, 'refrigerado'),
@@ -199,8 +175,6 @@ create table estadofisico(
     nombreestadofisico varchar(64) unique not null,
     primary key (idestadofisico)
 );
-grant select on estadofisico to transito;
-grant select on proyecto.estadofisico to apialmacen;
 insert into estadofisico values (1, 'sano'),
 (2, 'ligeramente dañado'),
 (3, 'medianamente dañado'),
@@ -222,9 +196,6 @@ create table paquete (
         references usuario (usuario),
     primary key (idpaquete)
 );
-grant insert, select, update on proyecto.paquete to apialmacen;
-grant select on proyecto.paquete to transito;
-
 insert into paquete values
 (1,'',25,12,'daud',1,'daud'),
 (2,'',5,2,'daud',3,'arreche'),
@@ -249,7 +220,6 @@ create table paquetecaracteristicas(
         references caracteristicas (idcaracteristica),
     primary key (idpaquete, idcaracteristica)        
 );
-grant insert, select, update on paquetecaracteristicas to apialmacen;
 
 insert into paquetecaracteristicas values (1,1),
 (2,1),
@@ -272,8 +242,6 @@ create table lotepaquete(
         references paquete (idpaquete),
     primary key (idpaquete)
 );
-grant insert, select, update on lotepaquete to apialmacen;
-grant select on lotepaquete to transito;
 
 insert into lotepaquete values (6,10),
 (1,1),
@@ -294,7 +262,7 @@ create table estado(
     estado varchar(64) not null,
     primary key (idestado)
 );
-grant select on proyecto.estado to transito;
+
 insert into estado values (1, 'En deposito'),
 (2, 'En tránsito'),
 (3, 'Entregado');
@@ -312,8 +280,6 @@ create table loteenvio(
         references estado (idestado),
     primary key (idlote)
 );
-grant insert, select, update on proyecto.loteenvio to apialmacen;
-grant select, update on proyecto.loteenvio to transito;
 insert into loteenvio values (1,1,'2023-08-09', 2),
 (2,1,'2023-07-23',2),
 (3,2,'2023-05-28',2),
@@ -376,8 +342,6 @@ create table conduce(
 );
 insert into conduce values ('pedro', 'ABC123', '2023-8-22', '14:23:00'),
 ('adictoalospaquetes', 'CBA321', '2023-8-23', '14:23:00');
-grant select on conduce to transito;
-grant select on conduce to apialmacen;
 
 
 create table conducellegada(
@@ -402,32 +366,31 @@ create table cargalote(
         references conduce (usuario, matricula, fechasalida),
     primary key (idlote)
 );
-grant insert, select, update on cargalote to apialmacen;
-grant select on cargalote to transito;
+
 insert into cargalote values (1, 'pedro', 'ABC123', (select fechasalida from conduce where matricula='ABC123' order by fechasalida desc limit 1));
 insert into cargalote values (2, 'pedro', 'ABC123', (select fechasalida from conduce where matricula='ABC123' order by fechasalida desc limit 1));
 insert into cargalote values (3, 'pedro', 'ABC123', (select fechasalida from conduce where matricula='ABC123' order by fechasalida desc limit 1));
 
 
 select *
-from proyecto.lugarenvio
-    join proyecto.almacen on proyecto.lugarenvio.idlugarenvio=proyecto.almacen.idlugarenvio
-    join proyecto.domicilio on proyecto.lugarenvio.idlugarenvio=proyecto.domicilio.idlugarenvio
-    join proyecto.lote on proyecto.lugarenvio.idlugarenvio=proyecto.lote.idlugarenvio;
+from joule.lugarenvio
+    join joule.almacen on joule.lugarenvio.idlugarenvio=joule.almacen.idlugarenvio
+    join joule.domicilio on joule.lugarenvio.idlugarenvio=joule.domicilio.idlugarenvio
+    join joule.lote on joule.lugarenvio.idlugarenvio=joule.lote.idlugarenvio;
 
 select * 
-    from proyecto.cargalote 
-        join proyecto.conduce on proyecto.cargalote.usuario=conduce.usuario
-        join proyecto.lote on proyecto.cargalote.idlote=lote.idlote
-        join proyecto.lotepaquete on proyecto.cargalote.idlote=lotepaquete.idlote;
+    from joule.cargalote 
+        join joule.conduce on joule.cargalote.usuario=conduce.usuario
+        join joule.lote on joule.cargalote.idlote=lote.idlote
+        join joule.lotepaquete on joule.cargalote.idlote=lotepaquete.idlote;
 
-create view proyecto.usuariorol as 
+create view joule.usuariorol as 
     select usuario.usuario, rol.nombre
-    from proyecto.usuario
-        inner join proyecto.rol on usuario.idrol=rol.idrol;
+    from joule.usuario
+        inner join joule.rol on usuario.idrol=rol.idrol;
 
-select * from proyecto.usuariorol;
+select * from joule.usuariorol;
 
-select * from proyecto.loteenvio;
+select * from joule.loteenvio;
 
-select * from proyecto.cargalote;
+select * from joule.cargalote;
