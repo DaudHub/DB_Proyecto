@@ -1,3 +1,4 @@
+drop database if exists joule;
 create database if not exists joule;
 use joule;
 create table lugarenvio(
